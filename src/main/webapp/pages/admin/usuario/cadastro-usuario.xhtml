@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:adm="http://github.com/adminfaces"
+	template="/WEB-INF/templates/template.xhtml">
+
+	<ui:define name="title">
+        Cadastro Usuário
+    </ui:define>
+
+	<ui:define name="body">
+		<f:metadata>
+			<f:viewParam name="id" value="#{cadastroUsuarioMB.idUsuario}"
+				converter="javax.faces.Long" />
+			<f:event listener="#{cadastroUsuarioMB.inicializar()}"
+				type="preRenderView"></f:event>
+		</f:metadata>
+
+		<adm:breadcrumb title="Cadastro Usuário"
+			link="cadastro-usuario.xhtml?id=" />
+		<h:form id="form" prependId="false">
+			<p:focus />
+
+
+			<div class="box box-primary">
+				<div class="box-header with-border">
+					<div id="main-buttons" class="hidden-sm hidden-xs">
+						<p:commandButton value="Salvar" update="@form"
+							action="#{cadastroUsuarioMB.salvar()}" icon="fa fa-check"
+							styleClass="btn-success" />
+						<p:spacer width="5" />
+
+						<p:commandButton value="Excluir" process="@this"
+							rendered="#{cadastroUsuarioMB.usuario.edicao}" icon="fa fa-trash"
+							action="#{cadastroUsuarioMB.excluir()}" styleClass="btn-danger">
+						</p:commandButton>
+						<p:spacer width="5" />
+						<p:commandButton value="Voltar" immediate="true"
+							action="lista-usuario?faces-redirect=true" process="@this"
+							icon="fa fa-close" />
+
+					</div>
+
+					<p:splitButton value="Salvar" update="@form" icon="fa fa-check"
+						action="#{cadastroUsuarioMB.salvar()}"
+						styleClass="hidden-md hidden-lg btn-success">
+						<p:menuitem value="Excluir"
+							rendered="#{cadastroUsuarioMB.usuario.edicao}"
+							action="#{cadastroUsuarioMB.excluir()}" process="@this"
+							icon="fa fa-trash" />
+						<p:separator />
+						<p:menuitem value="Voltar"
+							action="lista-usuario?faces-redirect=true" process="@this"
+							icon="fa fa-close" />
+					</p:splitButton>
+
+
+
+					<p:separator />
+
+					<div class="ui-fluid">
+
+						<p:panelGrid id="capaPanel" columns="1" layout="grid">
+							<p:fieldset legend="Dados do Usuário" style="width: auto;">
+								<p:panelGrid columns="1" layout="grid">
+
+									<!-- <p:messages id="msgPass" autoUpdate="true" /> -->
+
+									<p:outputLabel value="Data Criação:" for="criacao"
+										rendered="#{cadastroUsuarioMB.usuario.edicao}" />
+									<p:outputLabel id="criacao"
+										value="#{cadastroUsuarioMB.usuario.criacao}" disabled="true"
+										rendered="#{cadastroUsuarioMB.usuario.edicao}">
+										<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"
+											timeZone="America/Sao_Paulo" />
+									</p:outputLabel>
+
+									<p:outputLabel value="Nome:" for="nome" />
+									<p:inputText id="nome"
+										value="#{cadastroUsuarioMB.usuario.nome}"
+										placeholder="Nome do Usuário" required="true"
+										requiredMessage="É necessário inserir um nome" />
+									<p:message id="msgNome" for="nome" />
+
+									<p:outputLabel value="Nome de usuário:" for="username" />
+									<p:inputText id="username"
+										value="#{cadastroUsuarioMB.usuario.username}"
+										placeholder="Nome de usuário" required="true"
+										requiredMessage="É necessário inserir um nome de usuário" />
+									<p:message id="msgUsername" for="username" />
+
+									<p:outputLabel value="Senha:" for="pass" />
+									<p:inputText id="pass" type="password"
+										value="#{cadastroUsuarioMB.usuario.pass}" required="true"
+										requiredMessage="É necessário informar uma senha" />
+									<p:message id="msgPass" for="pass" />
+
+									<p:outputLabel for="status" value="Status:" />
+									<p:selectOneMenu id="status"
+										value="#{cadastroUsuarioMB.usuario.status}" required="true"
+										requiredMessage="É necessario inserir se é ATIVO ou INATIVO">
+										<f:selectItem itemLabel="Ativo" itemValue="ATIVO" />
+										<f:selectItem itemLabel="Inativo" itemValue="INATIVO" />
+									</p:selectOneMenu>
+									<p:message id="msgStatus" for="status" />
+
+									<p:outputLabel for="permissao" value="Permissões:" />
+									<p:selectManyCheckbox id="permissao" styleClass="many-checkbox"
+										value="#{cadastroUsuarioMB.usuario.permissoes}"
+										converter="permissaoConverter">
+										<f:attribute name="collectionType" value="java.util.ArrayList" />
+										<f:selectItems value="#{cadastroUsuarioMB.permissoes}"
+											var="permisssao" itemLabel="#{permisssao.nome}"
+											itemValue="#{permisssao}" />
+									</p:selectManyCheckbox>
+
+
+
+								</p:panelGrid>
+							</p:fieldset>
+						</p:panelGrid>
+					</div>
+				</div>
+			</div>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

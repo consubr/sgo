@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="produto_data" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="50c4666e-6c53-4402-b6e1-d516e2469aa9">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="data_inicio" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="data_fim" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     produto.`id` AS produto_id,
+     produto.`classe` AS produto_classe,
+     produto.`data_criacao` AS produto_data_criacao,
+     produto.`valor_precobase` AS produto_valor_precobase,
+     produto.`valor_precofinal` AS produto_valor_precofinal,
+     produto.`descricao` AS produto_descricao,
+     produto.`nome` AS produto_nome,
+     tipoproduto.`nometipo` AS tipoproduto_nometipo
+FROM
+     `tipoproduto` tipoproduto INNER JOIN `produto` produto ON tipoproduto.`id` = produto.`tipo_id`
+WHERE
+     produto.`data_criacao` BETWEEN $P{data_inicio} and $P{data_fim}]]>
+	</queryString>
+	<field name="produto_id" class="java.lang.Long"/>
+	<field name="produto_classe" class="java.lang.String"/>
+	<field name="produto_data_criacao" class="java.sql.Timestamp"/>
+	<field name="produto_valor_precobase" class="java.math.BigDecimal"/>
+	<field name="produto_valor_precofinal" class="java.math.BigDecimal"/>
+	<field name="produto_descricao" class="java.lang.String"/>
+	<field name="produto_nome" class="java.lang.String"/>
+	<field name="tipoproduto_nometipo" class="java.lang.String"/>
+	<variable name="produto_valor_precofinal_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{produto_valor_precofinal}]]></variableExpression>
+	</variable>
+	<variable name="produto_valor_precobase_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{produto_valor_precobase}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="44" width="555" height="20" uuid="a2373a30-5e0a-472d-9e96-16d3cf36daff"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Relatório de Produtos registrados por Data]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="27" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="10" width="38" height="20" uuid="1c6d6b59-1966-487b-91da-2a2937e33564"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="327" y="10" width="54" height="20" uuid="dcc42c47-5a8b-4b07-b197-81d6d3ae8db2"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Classe]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="251" y="10" width="76" height="20" uuid="a73b1c78-dcc2-47af-bd2e-827662b04c2b"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Data Criação]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="479" y="10" width="76" height="20" uuid="7e1f82dd-47b2-47c8-95e6-9e3bb66894d7"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Valor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="38" y="10" width="213" height="20" uuid="a514e02a-888c-41eb-ad54-00fd188b08bd"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Nome do Produto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="381" y="10" width="98" height="20" uuid="9c6e8a5b-a2aa-49d6-9fa9-68a6bd1ed90b"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Tipo do Produto]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="30" width="555" height="1" uuid="3c8689be-903c-4d28-bc56-31705f826ead"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="23" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="38" height="20" uuid="ff803db6-1ebf-4ac1-8777-d816ae6392d8"/>
+				<textFieldExpression><![CDATA[$F{produto_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="327" y="0" width="54" height="20" uuid="b9f3de40-3862-4192-acb2-2b2a9b625229"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{produto_classe}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="251" y="0" width="76" height="20" uuid="e55b1e1a-7fd1-418c-9408-86c5cfee09ec"/>
+				<textFieldExpression><![CDATA[$F{produto_data_criacao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="38" y="0" width="213" height="20" uuid="2a7701ce-f2ee-4dfa-937f-4c4f70beee3d"/>
+				<textFieldExpression><![CDATA[$F{produto_nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="381" y="0" width="98" height="20" uuid="f97e5a75-2ae4-4aa8-b9ce-c9f5584e8701"/>
+				<textFieldExpression><![CDATA[$F{tipoproduto_nometipo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement x="479" y="0" width="76" height="20" uuid="b97da1f4-83c8-4a4e-8779-966f13f04ec5"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{produto_valor_precofinal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
+				<reportElement x="479" y="0" width="76" height="20" uuid="d1f32128-329d-4197-9e1c-a8e0d2e580f1"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{produto_valor_precobase}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

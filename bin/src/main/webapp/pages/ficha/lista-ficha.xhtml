@@ -1,0 +1,104 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:adm="http://github.com/adminfaces"
+	template="/WEB-INF/templates/template.xhtml">
+
+	<ui:define name="head-end">
+		<style type="text/css">
+.ui-grid-row .ui-grid-col-2, .ui-grid-row .ui-grid-col-10 {
+	padding: 0.5em 0;
+	margin-left: 10px;
+}
+
+.ui-orderlist .ui-orderlist-list {
+	height: auto;
+}
+
+.ui-orderlist .ui-grid-row .ui-grid-col-2, .ui-orderlist .ui-grid-row .ui-grid-col-10
+	{
+	padding: 0;
+}
+</style>
+	</ui:define>
+
+	<ui:define name="title">
+        Ficha Técnica
+    </ui:define>
+
+	<ui:define name="description">    
+        Lista das Fichas Recentes
+    </ui:define>
+
+	<ui:define name="body">
+		<adm:breadcrumb title="Lista Ficha Técnica" />
+
+		<h:form>
+			<div class="box box-primary">
+				<div class="box-header with-border">
+					<p:commandButton action="cadastro-ficha?faces-redirect=true"
+						ajax="false" icon="fa fa-file-text" value="Nova Ficha Técnica"
+						styleClass="btn-success" />
+					<p:spacer width="5" />
+
+					<p:separator />
+
+
+					<p:dataTable id="fichaTable" widgetVar="fichaTable" rows="5"
+						value="#{listaFichaMB.fichas}" var="fichas" rowKey="#{fichas.id}"
+						paginator="true" paginatorPosition="bottom"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+						currentPageReportTemplate="" rowsPerPageTemplate="5,10,15,20,30"
+						emptyMessage="Não há fichas cadastradas">
+
+						<p:ajax event="rowSelectCheckbox" update="@(.ui-button)" />
+						<p:ajax event="rowUnselectCheckbox" update="@(.ui-button)" />
+						<p:ajax event="rowSelect" update="@(.ui-button)" />
+						<p:ajax event="rowUnselect" update="@(.ui-button)" />
+
+
+						<p:column headerText="Data"
+							sortBy="#{fichas.criacao}" width="10%">
+							<h:outputLabel value="#{fichas.criacao}">
+								 <f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputLabel>
+						</p:column>
+						
+						<p:column headerText="Nome do Produto" filterBy="#{fichas.produto.nome}"
+							sortBy="#{fichas.produto.nome}" filterMatchMode="contains" width="20%">
+							<h:link value="#{fichas.produto.nome}" outcome="cadastro-ficha.xhtml">
+								<f:param name="id" value="#{fichas.id}" />
+							</h:link>
+						</p:column>	
+						
+						<p:column headerText="Status" sortBy="#{fichas.fichaStatus.descricao}"
+							width="10%">
+							<h:outputLabel value="#{fichas.fichaStatus.descricao}" />
+						</p:column>					
+
+						<p:column headerText="Data Processamento"
+							sortBy="#{fichas.fechamento}" width="10%">
+							<h:outputLabel value="#{fichas.fechamento}">
+								 <f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputLabel>
+						</p:column>
+
+						<p:column headerText="Preço do Produto" sortBy="#{fichas.preco_custo}"
+							width="10%">
+							<h:outputLabel value="#{fichas.preco_custo}">
+							<f:convertNumber type="currency"/>
+							</h:outputLabel>
+						</p:column>
+
+
+					</p:dataTable>
+				</div>
+			</div>
+		</h:form>
+
+
+	</ui:define>
+
+</ui:composition>

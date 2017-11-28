@@ -1,0 +1,140 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:adm="http://github.com/adminfaces"
+	template="/WEB-INF/templates/template.xhtml">
+
+	<ui:define name="head-end">
+		<style type="text/css">
+.ui-grid-row .ui-grid-col-2, .ui-grid-row .ui-grid-col-10 {
+	padding: 0.5em 0;
+	margin-left: 10px;
+}
+
+.ui-orderlist .ui-orderlist-list {
+	height: auto;
+}
+
+.ui-orderlist .ui-grid-row .ui-grid-col-2, .ui-orderlist .ui-grid-row .ui-grid-col-10
+	{
+	padding: 0;
+}
+</style>
+	</ui:define>
+
+	<ui:define name="title">
+        Pesquisa Cliente
+    </ui:define>
+
+	<ui:define name="description">
+        Pesquise de acordo com os filtros
+    </ui:define>
+
+	<ui:define name="body">
+		<adm:breadcrumb title="Pesquisa Cliente" />
+
+		<h:form>
+			<div class="box box-primary">
+				<div class="box-header with-border">
+					<p:commandButton action="cadastro-cliente?faces-redirect=true"
+						ajax="false" icon="fa fa-plus" value="Novo"
+						styleClass="btn-success" />
+					<p:spacer width="5" />
+					<p:commandButton value="Excluir Selecionado(s)" icon="fa fa-trash"
+						styleClass="btn-danger"
+						action="#{listaClienteMB.excluirSelecionados()}" process="@form"
+						rendered="#{not empty listaClienteMB.clienteSelecionados}"
+						update="@form" />
+					<p:spacer width="5" />
+					<p:commandButton value="Visualizar Selecionado(s)"
+						oncomplete="PF('clienteSelecionados').show()"
+						rendered="#{not empty listaClienteMB.clienteSelecionados}"
+						update="@(.ui-dialog)" styleClass="btn-info" icon="fa fa-search" />
+					<p:separator />
+
+
+					<p:dataTable id="clienteTable" widgetVar="clienteTable" rows="8"
+						value="#{listaClienteMB.clientes}" var="cliente"
+						rowKey="#{cliente.id}"
+						selection="#{listaClienteMB.clienteSelecionados}" 
+						paginator="true" paginatorPosition="bottom"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+						currentPageReportTemplate="" rowsPerPageTemplate="5,10,15,20,30" emptyMessage="Não há clientes cadastrados no sistema.">
+
+						<p:ajax event="rowSelectCheckbox" update="@form" />
+						<p:ajax event="rowUnselectCheckbox" update="@form" />
+						<p:ajax event="rowSelect" update="@form" />
+						<p:ajax event="rowUnselect" update="@form" />
+
+						<p:column selectionMode="multiple" width="5%"
+							styleClass="align-center" />
+
+
+						<p:column headerText="Nome" filterBy="#{cliente.nome}"
+							sortBy="#{cliente.nome}" filterMatchMode="contains" >
+							<h:link value="#{cliente.nome}" outcome="cadastro-cliente.xhtml">
+								<f:param name="id" value="#{cliente.id}" />
+							</h:link>
+						</p:column>
+
+						<p:column headerText="E-mail" filterBy="#{cliente.email}"
+							sortBy="#{cliente.email}" filterMatchMode="contains">
+							<h:outputLabel value="#{cliente.email}" />
+						</p:column>
+						
+						<p:column headerText="Telefone" filterBy="#{cliente.telefone}"
+							sortBy="#{cliente.telefone}" filterMatchMode="contains">
+							<h:outputLabel value="#{cliente.telefone}" />
+						</p:column>
+
+						<p:column headerText="Status" sortBy="#{cliente.status.descricao}" width="10%">
+							<h:outputLabel value="#{cliente.status.descricao}" />
+						</p:column>
+
+
+
+
+					</p:dataTable>
+				</div>
+			</div>
+		</h:form>
+
+		<p:dialog header="Clientes Selecionados"
+			widgetVar="clienteSelecionados" height="450" width="600"
+			responsive="true" styleClass="dialog-login">
+			<p:dataList id="listaclienteSelecionadas"
+				value="#{listaClienteMB.clienteSelecionados}" var="cliente"
+				type="definition">
+
+				<h:form id="formExibicao">
+					<p:panelGrid id="loginGrid" columns="2" cellpadding="5" 
+						layout="grid" styleClass="no-border ui-fluid">
+						<p:outputLabel value="ID: " for="id" />
+						<p:outputLabel id="id" value="#{cliente.id}" />
+
+						<p:outputLabel value="Nome: " for="nome" />
+						<p:outputLabel id="nome" value="#{cliente.nome}"/>
+
+						<p:outputLabel value="E-mail: " for="email" />
+						<p:outputLabel id="email" value="#{cliente.email}" />
+
+						<p:outputLabel value="Telefone: " for="telefone" />
+						<p:outputLabel id="telefone" value="#{cliente.telefone}" />
+
+						<p:outputLabel value="Status: " for="status" />
+						<p:outputLabel id="status" value="#{cliente.status.descricao}" />
+						<p:separator />
+					</p:panelGrid>
+
+
+
+				</h:form>
+			</p:dataList>
+		</p:dialog>
+
+
+	</ui:define>
+
+</ui:composition>

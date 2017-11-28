@@ -1,0 +1,43 @@
+<html>
+    <body>
+        <table>
+            <tr>
+                <td style="width: 100px">Número:</td>
+                <td>$orcamento.id</td>
+            </tr>
+            <tr>
+                <td>Cliente:</td>
+                <td>$orcamento.cliente.nome</td>
+            </tr>
+            <tr>
+                <td>Responsável:</td>
+                <td>$orcamento.usuario.nome</td>
+            </tr>
+        </table>
+        
+        <br/>
+        <table border="1" cellspacing="0" cellpadding="3">
+            <tr>
+                <th>Produto</th>
+                <th>Valor unitário</th>
+                <th>Quantidade</th>
+                <th>Valor total</th>
+            </tr>
+            #foreach ($item in $orcamento.itens)
+            	#if ($item.orcamento.id)
+	            <tr>
+	                <td>$item.produto.nome</td>
+	                <td>$numberTool.format("¤ #0.00", $item.valorUnitario, $locale)</td>
+	                <td>$item.quantidade</td>
+	                <td>$numberTool.format("¤ #0.00", $item.valorTotal, $locale)</td>
+	            </tr>
+	            #end
+            #end
+        </table>
+        <br/>
+        <tr>
+                <td>Valor Total:</td>
+                <td>$numberTool.format("¤ #0.00", $orcamento.valorTotal, $locale)</td>
+            </tr>
+    </body>
+</html>

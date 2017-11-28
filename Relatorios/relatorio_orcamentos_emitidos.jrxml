@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relatorio_orcamentos_emitidos" pageWidth="612" pageHeight="792" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="796f1d97-07d0-4be9-816a-e8bcc729f9ff">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="data_inicio" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="data_fim" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     orcamento.`id` AS codigo,
+     orcamento.`valor_total` AS valor_total,
+     orcamento.`data_criacao` AS data_criacao,
+     usuario.`nome` AS nome_usuario,
+     cliente.`nome` AS cliente_nome
+FROM
+     `usuario` usuario INNER JOIN `orcamento` orcamento ON usuario.`id` = orcamento.`usuario_id`
+     INNER JOIN `cliente` cliente ON orcamento.`cliente_id` = cliente.`id`
+WHERE
+     orcamento.`statusorcamento` = 'EMITIDO'
+ AND orcamento.`data_criacao` BETWEEN $P{data_inicio} and $P{data_fim}
+ORDER BY
+     orcamento.`data_criacao` ASC]]>
+	</queryString>
+	<field name="codigo" class="java.lang.Long"/>
+	<field name="valor_total" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="data_criacao" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nome_usuario" class="java.lang.String"/>
+	<field name="cliente_nome" class="java.lang.String"/>
+	<variable name="valor_total_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{valor_total}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="570" height="79" uuid="97ece2dd-7e48-41cb-b0a8-7a79442fdf12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="24" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Relatório de Orçamentos Emitidos]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="22" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="19" width="565" height="1" uuid="49c83a6c-ffde-4076-9f36-ce0d114f3ce3"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="0" width="42" height="20" uuid="2ee70ef1-9b28-4bea-804f-67fc0fe52eeb"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Código]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="468" y="0" width="102" height="20" uuid="ad254372-1b5d-4403-b16c-4e3c1ddda60c"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Valor Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="53" y="0" width="100" height="20" uuid="b093bdb6-e97e-4c24-ad9b-7b4bf80898e2"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Data Criação]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="324" y="1" width="132" height="20" uuid="03af0436-265b-419a-96b6-3e5390a405cf"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Responsável]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="153" y="2" width="142" height="20" uuid="386351c4-c138-4552-94ee-96be5328f8c0"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Nome do Cliente]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="42" height="20" uuid="be532fa6-f6ee-4881-8aa5-17a796e51eaa"/>
+				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="53" y="1" width="100" height="20" uuid="3171196d-fe5f-4538-91e3-e1459b93b187"/>
+				<textFieldExpression><![CDATA[$F{data_criacao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="153" y="1" width="142" height="20" uuid="59474217-6fac-43d2-adda-46035c1c2058"/>
+				<textFieldExpression><![CDATA[$F{cliente_nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="324" y="1" width="132" height="20" uuid="b34db2a8-7a09-48d4-89f4-5bde0767b0e9"/>
+				<textFieldExpression><![CDATA[$F{nome_usuario}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="468" y="1" width="102" height="20" uuid="099c69e7-2d2d-4a3e-a00c-eac50ab1f733"/>
+				<textFieldExpression><![CDATA[$F{valor_total}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="50">
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="465" y="10" width="100" height="20" uuid="d4b8449a-7cf5-47db-ba89-88adc80c20ac"/>
+				<textFieldExpression><![CDATA[$V{valor_total_1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="336" y="10" width="129" height="20" uuid="b620049e-e81c-4c2a-9437-aafad1e68650"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Total dos Orçamentos:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="0" width="565" height="1" uuid="42e5dbe8-2851-4b60-a680-cfd5247db0e7"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

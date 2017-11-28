@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="orc_aprovado_data" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fccfccdf-7796-4b0b-aed9-a053064bedc4">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="data_inicio" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="data_fim" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     orcamento.`id` AS orcamento_id,
+     orcamento.`data_edicao` AS orcamento_data_edicao,
+     orcamento.`statusorcamento` AS orcamento_statusorcamento,
+     orcamento.`valor_total` AS orcamento_valor_total,
+     cliente.`nome` AS cliente_nome,
+     usuario.`nome` AS usuario_nome
+FROM
+     `cliente` cliente INNER JOIN `orcamento` orcamento ON cliente.`id` = orcamento.`cliente_id`
+     INNER JOIN `usuario` usuario ON orcamento.`usuario_id` = usuario.`id`
+WHERE
+     orcamento.`data_edicao` BETWEEN $P{data_inicio} and $P{data_fim}]]>
+	</queryString>
+	<field name="orcamento_id" class="java.lang.Long"/>
+	<field name="orcamento_data_edicao" class="java.sql.Timestamp"/>
+	<field name="orcamento_statusorcamento" class="java.lang.String"/>
+	<field name="orcamento_valor_total" class="java.math.BigDecimal"/>
+	<field name="cliente_nome" class="java.lang.String"/>
+	<field name="usuario_nome" class="java.lang.String"/>
+	<variable name="orcamento_valor_total_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{orcamento_valor_total}]]></variableExpression>
+	</variable>
+	<variable name="orcamento_id_1" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{orcamento_id}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="89" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="41" width="555" height="20" uuid="1661c95b-a69c-40a2-bd3d-bf4e88f64f72"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Relatório Orçamentos Aprovados por Data]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="50" splitType="Stretch">
+			<textField>
+				<reportElement x="48" y="10" width="45" height="20" uuid="0a336a59-e3ac-4ca8-9fff-aafd14d629ae"/>
+				<textFieldExpression><![CDATA[$F{orcamento_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="48" y="30" width="92" height="20" uuid="9347a2a5-c284-43f4-b4ea-04cada7a7dab"/>
+				<textFieldExpression><![CDATA[$F{orcamento_data_edicao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="201" y="10" width="92" height="20" uuid="25b3369b-2c7a-4634-bbfd-d97444567310"/>
+				<textFieldExpression><![CDATA[$F{orcamento_statusorcamento}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="463" y="30" width="92" height="20" uuid="7d284ccf-8147-4750-bb1b-05d072949328"/>
+				<textFieldExpression><![CDATA[$F{orcamento_valor_total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="201" y="30" width="193" height="20" uuid="21f2f0c0-a0bf-442e-ab53-da514ac1fad4"/>
+				<textFieldExpression><![CDATA[$F{cliente_nome}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="12" y="10" width="36" height="20" uuid="6a9e6d03-af5d-46a3-b524-a88bafafe837"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[ID:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="30" width="36" height="20" uuid="7bd07fe1-7eda-44c6-bd25-0c8012ab01f0"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Data:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="154" y="10" width="47" height="20" uuid="044630cc-a0e7-4455-9e91-bf95bb0b72b0"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Status:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="154" y="30" width="47" height="20" uuid="9f0ca21e-c09f-464c-8766-c010f989197a"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Cliente:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="421" y="30" width="42" height="20" uuid="c0f42b72-bd97-4755-ae74-99b3be00016e"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Valor:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="0" width="555" height="2" uuid="4c3a94b1-1399-4aed-852f-a01b2b3ba691"/>
+			</line>
+		</band>
+	</detail>
+	<summary>
+		<band height="53" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="0" width="555" height="2" uuid="40f572ab-9447-454c-b585-673f8cd0c137"/>
+			</line>
+			<staticText>
+				<reportElement x="389" y="16" width="74" height="20" uuid="bd333e71-1167-4a08-bd32-a6270b64ea07"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Valor Total:]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="463" y="16" width="92" height="20" uuid="85eee655-b9e9-45b1-9b49-050d78a32ffd"/>
+				<textFieldExpression><![CDATA[$V{orcamento_valor_total_1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="12" y="16" width="124" height="20" uuid="535a4d02-0524-49fd-bef7-594ded8f25f5"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Total de Orçamentos:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="136" y="16" width="27" height="20" uuid="588ba048-14df-49b0-81db-4d2ec0bc5215"/>
+				<textFieldExpression><![CDATA[$V{orcamento_id_1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

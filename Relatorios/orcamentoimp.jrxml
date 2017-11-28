@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="orcamentoimp" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5d3ada3f-4efe-46f8-9c86-1f7db9b5d0b1">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="orcamento_id" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="logo" class="java.awt.Image">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     orcamento.`data_finalizacao` AS data_emissao,
+     orcamento.`obs` AS observacao,
+     orcamento.`statusorcamento` AS statusorcamento,
+     orcamento.`valor_total` AS valor_total,
+     orcamento.`formapagamento` AS formapagamento,
+     orcamento.`prazoentrega` AS prazoentrega,
+     usuario.`nome` AS responsavel,
+     cliente.`nome` AS cliente,
+     item_orcamento.`quantidade` AS item_quantidade,
+     item_orcamento.`valor_unitario` AS item_valor_unitario,
+     produto.`nome` AS produto
+FROM
+     `usuario` usuario INNER JOIN `orcamento` orcamento ON usuario.`id` = orcamento.`usuario_id`
+     INNER JOIN `cliente` cliente ON orcamento.`cliente_id` = cliente.`id`
+     INNER JOIN `item_orcamento` item_orcamento ON orcamento.`id` = item_orcamento.`orcamento_id`
+     INNER JOIN `produto` produto ON item_orcamento.`produto_id` = produto.`id`
+WHERE
+     orcamento.`id` = $P{orcamento_id}]]>
+	</queryString>
+	<field name="data_emissao" class="java.sql.Timestamp"/>
+	<field name="observacao" class="java.lang.String"/>
+	<field name="statusorcamento" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="valor_total" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="formapagamento" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="prazoentrega" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="responsavel" class="java.lang.String"/>
+	<field name="cliente" class="java.lang.String"/>
+	<field name="item_quantidade" class="java.lang.Integer"/>
+	<field name="item_valor_unitario" class="java.math.BigDecimal"/>
+	<field name="produto" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="90" splitType="Stretch">
+			<staticText>
+				<reportElement x="203" y="0" width="549" height="90" uuid="670d220b-325b-4a6e-9c38-4acd98368149"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="styled">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[ORÇAMENTO MOVEIS PLANEJADOS]]></text>
+			</staticText>
+			<image>
+				<reportElement x="13" y="17" width="190" height="61" uuid="41a21b3a-4393-405e-80c7-3d4722947903"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="75" splitType="Stretch">
+			<staticText>
+				<reportElement x="13" y="31" width="81" height="20" uuid="a035ad92-dfa1-4a49-bf4d-b59641168bac"/>
+				<text><![CDATA[Data Emissão:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="320" y="31" width="42" height="20" uuid="dff8a43c-e579-4e76-9252-613221f14194"/>
+				<text><![CDATA[Cliente:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="294" y="51" width="68" height="20" uuid="8b402356-0d4a-4cbe-a306-b80871704648"/>
+				<text><![CDATA[Responsável:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="614" y="31" width="40" height="20" uuid="624e58a3-2f7d-44ce-b0b3-1d43cfa26489"/>
+				<text><![CDATA[Status:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="362" y="51" width="214" height="20" uuid="718a72e2-ea53-448c-a0ab-f7bf782082aa"/>
+				<textFieldExpression><![CDATA[$F{responsavel}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="362" y="31" width="214" height="20" uuid="5aa585f7-4a9e-48b7-89a9-bce7753fafff"/>
+				<textFieldExpression><![CDATA[$F{cliente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="654" y="31" width="84" height="20" uuid="f601a586-f944-49db-911d-36a57a654e57"/>
+				<textFieldExpression><![CDATA[$F{statusorcamento}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="94" y="31" width="109" height="20" uuid="5e189676-bea7-4cbd-8d1d-20fbf21502e6"/>
+				<textFieldExpression><![CDATA[$F{data_emissao}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="13" y="12" width="190" height="19" uuid="732b2838-675f-46bd-ae99-184e8619b9c5"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[INFORMAÇÕES DO ORÇAMENTO]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="71" width="752" height="1" uuid="2c562426-acf3-4a20-a4d9-7aae69a69b27"/>
+			</line>
+			<line>
+				<reportElement x="-14" y="0" width="766" height="1" uuid="d78611a6-aa27-4be3-b104-1f2777c34e4e"/>
+			</line>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="45" splitType="Stretch">
+			<staticText>
+				<reportElement x="362" y="21" width="68" height="20" uuid="466b21a5-2495-4db8-b731-8858d0937d8f"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Quantidade]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="477" y="21" width="99" height="20" uuid="6c33ba33-586b-4970-a9b9-166f48b95710"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Valor Unitário]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="21" width="307" height="20" uuid="ee2afbdb-6021-4edb-aa87-602946cd72e4"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Produto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="2" width="190" height="19" uuid="651b7a34-8ba2-462f-ab44-8474661afe2a"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[ITENS DO ORÇAMENTO]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="41" width="752" height="1" uuid="2ea94574-816f-4e33-abef-84b2a2b4c0ac"/>
+			</line>
+			<staticText>
+				<reportElement x="598" y="21" width="118" height="20" uuid="1782a937-ee82-4f7d-8b1d-28b1c7cb000e"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Valor Total dos Itens]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="362" y="0" width="68" height="20" uuid="a8299f80-dfce-4cef-af8d-069fff6e32bb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{item_quantidade}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="477" y="0" width="99" height="20" uuid="cd81bee9-6b81-4294-8e06-14b8302520de"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{item_valor_unitario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="13" y="0" width="307" height="20" uuid="af1aa723-973e-45ab-a57b-496875ccce11"/>
+				<textFieldExpression><![CDATA[$F{produto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="598" y="0" width="118" height="20" uuid="7f6d0015-97d6-49a5-bb34-b9994fb18527"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{item_valor_unitario}.multiply(new BigDecimal($F{item_quantidade}))]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="10" width="752" height="20" uuid="2619ec4f-ad24-4ec6-b933-7462d57d6666"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Canini Movelaria - Moveis Planejados - Av Amazonas, em frente à Eletro Mandaguari - Telefones: (44) 3233-4619 FIXO - (44) 9 9753-7170 - NETO]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="9" width="752" height="1" uuid="6fe7d65b-76d5-43a4-a285-0e2ad8e5bf31"/>
+			</line>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="145" splitType="Stretch">
+			<staticText>
+				<reportElement x="13" y="54" width="81" height="20" uuid="c54abdc9-b2a5-481f-ac37-6eb617e20944"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Observações:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="546" y="12" width="68" height="20" uuid="ccc0a7b7-c719-4629-9946-5e8c5fd779cc"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Valor Total:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="12" width="94" height="20" uuid="1dfff9d0-c421-4ed5-a17f-bc663c2bdf95"/>
+				<text><![CDATA[Prazo de Entrega:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="252" y="12" width="126" height="20" uuid="a3a1c4a1-7ea5-4e1a-9937-79a75b7abf52"/>
+				<text><![CDATA[Forma de Pagamento:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="107" y="12" width="96" height="20" uuid="b36ce7c4-57b9-4797-8ccd-32f3c1d6e13f"/>
+				<textFieldExpression><![CDATA[$F{prazoentrega}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="378" y="12" width="124" height="20" uuid="0c07d4be-8d7f-4364-b9c8-48229def7224"/>
+				<textFieldExpression><![CDATA[$F{formapagamento}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="614" y="12" width="102" height="20" uuid="176adfad-a38b-43e7-93eb-3a50d8a003f9"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor_total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="13" y="74" width="669" height="58" uuid="40ec7b83-2a46-4bf3-8eb2-3e8a8ea41a10"/>
+				<textFieldExpression><![CDATA[$F{observacao}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="1" width="752" height="1" uuid="29640d92-dddf-4e25-97ef-ad606b91cc76"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

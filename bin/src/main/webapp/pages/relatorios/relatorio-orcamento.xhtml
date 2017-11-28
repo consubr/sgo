@@ -1,0 +1,70 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:adm="http://github.com/adminfaces"
+	template="/WEB-INF/templates/template.xhtml">
+
+	<ui:define name="head-end">
+		<style type="text/css">
+.ui-grid-row .ui-grid-col-2, .ui-grid-row .ui-grid-col-10 {
+	padding: 0.5em 0;
+	margin-left: 10px;
+}
+
+.ui-orderlist .ui-orderlist-list {
+	height: auto;
+}
+
+.ui-orderlist .ui-grid-row .ui-grid-col-2, .ui-orderlist .ui-grid-row .ui-grid-col-10
+	{
+	padding: 0;
+}
+</style>
+	</ui:define>
+
+	<ui:define name="body">
+		<adm:breadcrumb title="Relatório Orcamentos" />
+
+		<h:form>
+			<div class="box box-primary">
+				<div class="box-header with-border">
+					<h3 style="margin-top: 0">Relatórios de Orçamento</h3>
+					<p:accordionPanel>
+						<p:tab title="Relatório Orçamentos Emitidos por Período">
+							<h:panelGrid columns="2" cellpadding="10">
+								<p:outputLabel value="Data de criação:    " />
+								<h:panelGroup>
+									<p:calendar value="#{relatorioOrcamentosEmitidosMB.dataInicio}"
+										label="Data inicial" pattern="dd/MM/yyyy" size="8" />
+									<p:spacer width="8" />
+									<h:outputText value="a" />
+									<p:spacer width="8" />
+									<p:calendar value="#{relatorioOrcamentosEmitidosMB.dataFim}"
+										label="Data final" pattern="dd/MM/yyyy" size="8" />
+								</h:panelGroup>
+								<br/>
+								
+							</h:panelGrid>
+							<p:commandButton value="Emitir" ajax="false"
+							action="#{relatorioOrcamentosEmitidosMB.emitir}"/>
+						</p:tab>
+						<p:tab title="Relatório Orçamentos Emitidos por Cliente">
+							<h:panelGrid columns="2" cellpadding="10">
+								<h:outputText value="Relatório Orçamentos Emitidos por Cliente" />
+							</h:panelGrid>
+						</p:tab>
+					</p:accordionPanel>
+
+
+
+				</div>
+			</div>
+		</h:form>
+
+
+
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:adm="http://github.com/adminfaces"
+	template="/WEB-INF/templates/template.xhtml">
+
+	<ui:define name="title">
+        Cadastro de Ficha Técnica
+    </ui:define>
+
+	<ui:define name="body">
+		<f:metadata>
+			<f:viewParam name="id" value="#{cadastroFichaMB.idFicha}"
+				converter="javax.faces.Long" />
+			<f:event listener="#{cadastroFichaMB.inicializar()}"
+				type="preRenderView"></f:event>
+		</f:metadata>
+
+		<adm:breadcrumb title="Cadastro de Ficha Técnica"
+			link="cadastro-ficha.xhtml?id=" />
+		<h:form id="frmCadastro" prependId="false">
+			<p:focus />
+
+
+			<div class="box box-primary">
+				<div class="box-header with-border">
+					<div id="main-buttons" class="hidden-sm hidden-xs">
+						<p:commandButton value="Salvar" update="@form"
+							action="#{cadastroFichaMB.salvar()}" icon="fa fa-check"
+							styleClass="btn-success" disabled="#{cadastroFichaMB.ficha.finalizado}"/>
+						<p:spacer width="5" />
+						
+						<p:commandButton value="Excluir" process="@this"
+							rendered="#{cadastroFichaMB.ficha.edicao}"
+							action="#{cadastroFichaMB.excluir()}" icon="fa fa-trash"
+							styleClass="btn-danger">
+						</p:commandButton>
+						
+						<p:spacer width="5" />
+
+						<p:commandButton value="Voltar" immediate="true"
+							action="lista-ficha?faces-redirect=true" process="@this"
+							icon="fa fa-close"/>
+
+						<p:spacer width="5" />
+
+						<p:commandButton value="Processar Ficha" process="@form"
+							action="#{processoFichaMB.processarFicha}" update="@form"
+							icon="fa fa-plus-square-o" styleClass="btn-warning pull-right"
+							disabled="#{cadastroFichaMB.ficha.finalizado}">
+						</p:commandButton>
+
+					</div>
+
+					<p:splitButton value="Salvar" update="@form" icon="fa fa-check"
+						styleClass="hidden-md hidden-lg btn-success">
+
+						<p:separator />
+
+						<p:menuitem value="Voltar"
+							action="lista-ficha?faces-redirect=true" process="@this"
+							icon="fa fa-close" />
+
+						<p:separator />
+
+						<p:menuitem value="Processar Ficha" process="@this"
+							icon="fa fa-plus-square-o" />
+					</p:splitButton>
+
+
+
+					<p:separator />
+
+					<div class="ui-fluid">
+						<p:panelGrid id="capaPanel" columns="2" layout="grid">
+							<p:fieldset legend="Dados da Ficha" style="width: auto;">
+								<p:panelGrid columns="1" layout="grid">
+
+									<p:outputLabel value="Data Criação:" for="criacao"
+										rendered="#{cadastroFichaMB.ficha.edicao}" />
+									<h:outputText id="criacao"
+										value="#{cadastroFichaMB.ficha.criacao}"
+										rendered="#{cadastroFichaMB.ficha.edicao}">
+										<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"
+											timeZone="America/Sao_Paulo" />
+									</h:outputText>
+
+
+									<p:outputLabel value="Data Processamento:" for="finalizado"
+										rendered="#{cadastroFichaMB.ficha.finalizado}" />
+									<h:outputText id="finalizado"
+										value="#{cadastroFichaMB.ficha.fechamento}"
+										rendered="#{cadastroFichaMB.ficha.finalizado}">
+										<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"
+											timeZone="America/Sao_Paulo" />
+									</h:outputText>
+
+									<p:outputLabel value="Status Ficha:" for="statusFicha" />
+									<h:outputText value="#{cadastroFichaMB.ficha.fichaStatus.descricao}"
+										id="statusFicha" />
+
+									<p:outputLabel value="Produto:" for="produtoficha" />
+									<p:selectOneMenu id="produtoficha"
+										value="#{cadastroFichaMB.ficha.produto}" required="true"
+										requiredMessage="É necessario inserir o Produto da Ficha"
+										filter="true" filterMatchMode="startsWith"
+										disabled="#{cadastroFichaMB.ficha.finalizado}">
+										<f:selectItem itemLabel="Selecione" />
+										<f:selectItems value="#{cadastroFichaMB.produtosficha}"
+											var="produtoficha" itemLabel="#{produtoficha.nome}"
+											itemValue="#{produtoficha}" />
+									</p:selectOneMenu>
+									<p:message id="msgProdutoFicha" for="produtoficha" />
+
+									<p:outputLabel value="Mão de Obra:" for="mao" />
+									<p:inputText id="mao"
+										value="#{cadastroFichaMB.ficha.maodeobra}"
+										placeholder="Custo de Mão de Obra"
+										disabled="#{cadastroFichaMB.ficha.finalizado}"
+										styleClass="moeda" size="10" maxlength="10">
+										<f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+										<p:ajax event="change" process="@this" update="precofinal"
+											listener="#{cadastroFichaMB.recalcularFicha}" />
+									</p:inputText>
+								</p:panelGrid>
+							</p:fieldset>
+
+							<p:fieldset legend="Dimensões do Produto"
+								style="margin-bottom:20px">
+
+								<p:panelGrid columns="1" layout="grid">
+									<p:outputLabel value="Largura:" for="largura" />
+									<p:inputText id="largura"
+										value="#{cadastroFichaMB.ficha.largura}"
+										placeholder="Largura do Produto" />
+									<p:outputLabel value="Altura:" for="altura" />
+									<p:inputText id="altura"
+										value="#{cadastroFichaMB.ficha.altura}"
+										placeholder="Altura do Produto" />
+									<p:outputLabel value="Comprimento:" for="comprimento" />
+									<p:inputText id="comprimento"
+										value="#{cadastroFichaMB.ficha.comprimento}"
+										placeholder="Comprimento do Produto" />
+								</p:panelGrid>
+
+							</p:fieldset>
+
+							<p:fieldset legend="Valores" style="margin-bottom:10px">
+
+								<p:panelGrid columns="4" layout="grid">
+									<p:outputLabel value="Subtotal" style="font-weight: bold" />
+									<h:outputText value="#{cadastroFichaMB.ficha.valorSubtotal}"
+										style="font-weight: bold" id="subtotal">
+										<f:convertNumber type="currency" />
+									</h:outputText>
+									<p:outputLabel value="Preço do Produto:" for="precofinal"
+										style="font-weight: bold; font-size: 1.0em" />
+									<h:outputText id="precofinal"
+										value="#{cadastroFichaMB.ficha.preco_custo}"
+										style="font-weight: bold; font-size: 1.1em">
+										<f:convertNumber type="currency" />
+									</h:outputText>
+								</p:panelGrid>
+
+							</p:fieldset>
+
+						</p:panelGrid>
+					</div>
+
+				</div>
+			</div>
+			<div class="box box-primary">
+				<div class="box-header with-border">
+					<div class="ui-g-12">
+						<p:panel header="Itens da Ficha" styleClass="card no-border">
+
+							<p:dataTable value="#{cadastroFichaMB.ficha.itens}" var="item" rowIndexVar="linha"
+								id="tabelaItens">
+								<p:column headerText="Código" style="text-align: center; width: 110px">
+									<h:outputText value="#{item.produto.id}"
+										rendered="#{item.itemAssosiado}" />
+								</p:column>
+								<p:column headerText="Matéria Prima">
+									<h:outputText value="#{item.produto.nome}"
+										rendered="#{item.itemAssosiado}" />
+									<p:autoComplete styleClass="produto-tabela"
+										style="text-align: center;" size="65"
+										value="#{cadastroFichaMB.itemLinhaEditavel}"
+										completeMethod="#{cadastroFichaMB.completarItem}"
+										var="materia" itemLabel="#{materia.nome}"
+										itemValue="#{materia}" forceSelection="true"
+										rendered="#{not item.itemAssosiado}">
+										<p:ajax event="itemSelect"
+											update="tabelaItens :frmCadastro:precofinal :frmCadastro:subtotal"
+											listener="#{cadastroFichaMB.carregarMateriaLinhaEditavel}" />
+									</p:autoComplete>
+								</p:column>
+
+								<p:column headerText="Tipo do Material"
+									style="text-align: center; width: 120px">
+									<h:outputText value="#{item.produto.tipoproduto.nometipo}" />
+								</p:column>
+								<p:column headerText="Valor unitário"
+									style="text-align: right; width: 100px">
+									<h:outputText value="#{item.valorUnitario}">
+										<f:convertNumber type="currency" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Quantidade"
+									style="text-align: center; width: 110px">
+									<p:inputText size="5" value="#{item.quantidade}">
+										<p:ajax event="change" process="@this"
+											update="tabelaItens :frmCadastro:precofinal :frmCadastro:subtotal"
+											listener="#{cadastroFichaMB.atualizarQuantidade(item, linha)}" />
+									</p:inputText>
+								</p:column>
+								<p:column headerText="Valor Total"
+									style="text-align: right; width: 100px">
+									<h:outputText value="#{item.valorTotal}">
+										<f:convertNumber type="currency" />
+									</h:outputText>
+								</p:column>
+
+								<p:columnGroup type="footer">
+									<p:row>
+										<p:column colspan="5" footerText="Subtotal" 
+											style="text-align: right; font-weight: bold" />
+										<p:column style="text-align: right">
+											<f:facet name="footer">
+												<h:outputText value="#{cadastroFichaMB.ficha.valorSubtotal}">
+													<f:convertNumber type="currency"/>
+												</h:outputText>
+											</f:facet>
+										</p:column>
+									</p:row>
+								</p:columnGroup>
+							</p:dataTable>
+
+						</p:panel>
+					</div>
+
+				</div>
+			</div>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

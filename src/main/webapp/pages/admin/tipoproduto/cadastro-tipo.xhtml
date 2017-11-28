@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:adm="http://github.com/adminfaces"
+	template="/WEB-INF/templates/template.xhtml">
+
+	<ui:define name="title">
+        Cadastro Tipo de Produto
+    </ui:define>
+
+	<ui:define name="body">
+		<f:metadata>
+			<f:viewParam name="id" value="#{cadastroTPMB.idTP}"
+				converter="javax.faces.Long" />
+			<f:event listener="#{cadastroTPMB.inicializar()}"
+				type="preRenderView"></f:event>
+		</f:metadata>
+
+		<adm:breadcrumb title="Cadastro Tipo de Produto"
+			link="cadastro-tipo.xhtml?id=" />
+		<h:form id="form" prependId="false">
+			<p:focus />
+
+
+			<div class="box box-primary">
+				<div class="box-header with-border">
+					<div id="main-buttons" class="hidden-sm hidden-xs">
+						<p:commandButton value="Salvar" update="@form"
+							action="#{cadastroTPMB.salvar()}" icon="fa fa-check"
+							styleClass="btn-success" />
+						<p:spacer width="5" />
+
+						<p:commandButton value="Excluir" process="@this"
+							rendered="#{cadastroTPMB.tipoproduto.edicao}" icon="fa fa-trash"
+							action="#{cadastroTPMB.excluir()}" styleClass="btn-danger">
+						</p:commandButton>
+						<p:spacer width="5" />
+						<p:commandButton value="Voltar" immediate="true"
+							action="lista-tipo?faces-redirect=true" process="@this"
+							icon="fa fa-close" />
+
+					</div>
+
+					<p:splitButton value="Salvar" update="@form" icon="fa fa-check"
+						action="#{cadastroTPMB.salvar()}"
+						styleClass="hidden-md hidden-lg btn-success">
+						<p:menuitem value="Excluir"
+							rendered="#{cadastroTPMB.tipoproduto.edicao}"
+							action="#{cadastroTPMB.excluir()}" process="@this"
+							icon="fa fa-trash" />
+						<p:separator />
+						<p:menuitem value="Voltar"
+							action="lista-tipo?faces-redirect=true" process="@this"
+							icon="fa fa-close" />
+					</p:splitButton>
+
+
+
+					<p:separator />
+
+					<div class="ui-fluid">
+					
+						<p:panelGrid id="capaPanel" columns="1" layout="grid">
+							<p:fieldset legend="Dados do Tipo de Produto" style="width: auto;">
+								<p:panelGrid columns="1" layout="grid">
+									
+									
+									<p:outputLabel value="Nome:" for="nome" />
+									<p:inputText id="nome"
+										value="#{cadastroTPMB.tipoproduto.nometipo}"
+										placeholder="Nome do Tipo do Produto" required="true"
+										requiredMessage="É necessário inserir um nome" />
+									<p:message id="msgNome" for="nome" />
+
+									<p:outputLabel value="Descrição:" for="descricao" />
+									<p:inputText id="descricao"
+										value="#{cadastroTPMB.tipoproduto.descricao}"
+										placeholder="Descrição do Tipo do Produto" required="true"
+										requiredMessage="É necessário inserir uma descrição" />
+									<p:message id="msgDescricao" for="descricao" />
+									
+									<p:outputLabel for="status"
+										value="Status:" />
+									<p:selectOneMenu id="status"
+										value="#{cadastroTPMB.tipoproduto.status}" 
+										required="true"
+										requiredMessage="É necessario inserir se é ATIVO ou INATIVO">
+										<f:selectItem itemLabel="Ativo" itemValue="ATIVO" />
+										<f:selectItem itemLabel="Inativo" itemValue="INATIVO" />
+									</p:selectOneMenu>
+									<p:message id="msgStatus" for="status"/>
+									
+								</p:panelGrid>
+							</p:fieldset>
+						</p:panelGrid>
+					</div>
+				</div>
+			</div>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

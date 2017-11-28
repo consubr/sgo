@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:adm="http://github.com/adminfaces"
+	template="/WEB-INF/templates/template.xhtml">
+
+	<ui:define name="title">
+        Cadastro Orçamento
+    </ui:define>
+
+	<ui:define name="body">
+		<f:metadata>
+			<f:viewParam name="id" value="#{cadastroOrcamentoMB.idOrcamento}"
+				converter="javax.faces.Long" />
+			<f:event listener="#{cadastroOrcamentoMB.inicializar()}"
+				type="preRenderView"></f:event>
+		</f:metadata>
+
+		<adm:breadcrumb title="Cadastro de Orçamento"
+			link="cadastro-orcamento.xhtml?id=" />
+		<h:form id="frmCadastro" prependId="false">
+			<p:focus />
+
+
+			<div class="box box-primary">
+				<div class="box-header with-border">
+					<div id="main-buttons" class="hidden-sm hidden-xs">
+						<p:commandButton value="Salvar" update="@form"
+							action="#{cadastroOrcamentoMB.salvar()}" icon="fa fa-check"
+							styleClass="btn-success"
+							disabled="#{cadastroOrcamentoMB.orcamento.emitido || cadastroOrcamentoMB.orcamento.aprovado}" />
+						<p:spacer width="5" />
+
+						<p:commandButton value="Excluir" process="@this"
+							icon="fa fa-trash" action="#{cadastroOrcamentoMB.excluir()}"
+							rendered="#{cadastroProdutoMB.produto.edicao}"
+							styleClass="btn-danger">
+						</p:commandButton>
+
+						<p:spacer width="5" />
+						<p:commandButton value="Voltar" immediate="true"
+							action="lista-orcamento?faces-redirect=true" process="@this"
+							icon="fa fa-close" />
+
+						<p:commandButton value="Emitir Orçamento" process="@form"
+							update="@form" rendered="#{cadastroOrcamentoMB.orcamento.andamento}"
+							action="#{emissaoOrcamentoMB.emitirOrcamento}"
+							icon="fa fa-plus-square-o" styleClass="btn-primary pull-right">
+						</p:commandButton>						
+						
+						<p:spacer width="10" />
+						<p:commandButton value="Salvar PDF" ajax="false"
+							action="#{orcImp.emitir}"
+							rendered="#{cadastroOrcamentoMB.orcamento.emitido || cadastroOrcamentoMB.orcamento.aprovado}"
+							icon="fa fa-download" styleClass="btn-warning pull-right">
+						</p:commandButton>
+						<p:spacer width="10" />
+						<p:commandButton value="Enviar por E-mail" process="@this"
+							rendered="#{cadastroOrcamentoMB.orcamento.emitido || cadastroOrcamentoMB.orcamento.aprovado}"
+							action="#{envioOrcamentoMB.enviar}" icon="fa fa-envelope-o"
+							styleClass="btn-danger pull-right">
+						</p:commandButton>
+						<p:spacer width="10" />
+						<p:commandButton value="Aprovar" process="@this"
+							rendered="#{cadastroOrcamentoMB.orcamento.emitido || cadastroOrcamentoMB.orcamento.aprovado}"
+							action="#{cadastroOrcamentoMB.aprovar()}" icon="fa fa-thumbs-up"
+							styleClass="btn-success pull-right"
+							disabled="#{cadastroOrcamentoMB.orcamento.aprovado}">
+						</p:commandButton>
+						<p:spacer width="10" />
+
+					</div>
+
+					<p:splitButton value="Opções" update="@form" icon="fa fa-check"
+						styleClass="hidden-md hidden-lg btn-success">
+						<p:menuitem value="Salvar" process="@this" icon="fa fa-check"
+							styleClass="hidden-md hidden-lg" action="#{cadastroOrcamentoMB.salvar()}"
+							disabled="#{cadastroOrcamentoMB.orcamento.emitido || cadastroOrcamentoMB.orcamento.aprovado}"/>
+						<p:menuitem value="Excluir" process="@this" icon="fa fa-trash"
+							rendered="#{cadastroProdutoMB.produto.edicao}"
+							action="#{cadastroOrcamentoMB.excluir()}" styleClass="btn-danger" />
+						<p:separator />
+						<p:menuitem value="Voltar"
+							action="lista-orcamento?faces-redirect=true" process="@this"
+							icon="fa fa-close" />
+						<p:separator />
+						<p:menuitem value="Emitir Orçamento" process="@form"
+							update="@form" rendered="#{cadastroOrcamentoMB.orcamento.andamento}"
+							action="#{emissaoOrcamentoMB.emitirOrcamento}"
+							icon="fa fa-plus-square-o" />
+						<p:menuitem value="Salvar PDF" ajax="false"
+							action="#{orcImp.emitir}" rendered="#{cadastroOrcamentoMB.orcamento.emitido || cadastroOrcamentoMB.orcamento.aprovado}"
+							icon="fa fa-download"/>
+							<p:separator />
+						<p:menuitem value="Enviar E-mail" process="@this"
+							rendered="#{cadastroOrcamentoMB.orcamento.emitido || cadastroOrcamentoMB.orcamento.aprovado}"
+							action="#{envioOrcamentoMB.enviar}" icon="fa fa-envelope-o"/>
+							<p:separator />
+						<p:menuitem value="Aprovar" process="@this"
+							rendered="#{cadastroOrcamentoMB.orcamento.emitido || cadastroOrcamentoMB.orcamento.aprovado}"
+							action="#{cadastroOrcamentoMB.aprovar()}" icon="fa fa-thumbs-up"
+							disabled="#{cadastroOrcamentoMB.orcamento.aprovado}"/>
+
+					</p:splitButton>
+
+
+
+					<p:separator />
+
+					<div class="ui-fluid ">
+
+						<p:panelGrid id="capaPanel" columns="2" layout="grid">
+							<p:fieldset legend="Dados do Orcamento" style="width: auto;">
+								<p:panelGrid columns="1" layout="grid">
+
+									<p:outputLabel value="Data Criação:" for="criacao" />
+									<h:outputText id="criacao"
+										value="#{cadastroOrcamentoMB.orcamento.dataCriacao}">
+										<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"
+											timeZone="America/Sao_Paulo" />
+									</h:outputText>
+
+									<p:outputLabel value="Data Emissao:" for="emissao"
+										rendered="#{cadastroOrcamentoMB.orcamento.emitido || cadastroOrcamentoMB.orcamento.aprovado}" />
+									<h:outputText id="emissao"
+										value="#{cadastroOrcamentoMB.orcamento.dataFinalizacao}"
+										rendered="#{cadastroOrcamentoMB.orcamento.emitido || cadastroOrcamentoMB.orcamento.aprovado}">
+										<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"
+											timeZone="America/Sao_Paulo" />
+									</h:outputText>
+
+									<p:outputLabel value="Data Edição:" for="edicao"
+										rendered="#{not empty cadastroOrcamentoMB.orcamento.dataEdicao}" />
+									<h:outputText id="edicao"
+										value="#{cadastroOrcamentoMB.orcamento.dataEdicao}"
+										rendered="#{not empty cadastroOrcamentoMB.orcamento.dataEdicao}">
+										<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"
+											timeZone="America/Sao_Paulo" />
+									</h:outputText>
+
+									<p:outputLabel value="Status:" for="status" />
+									<h:outputText id="status"
+										value="#{cadastroOrcamentoMB.orcamento.statusorcamento.descricao}" />
+
+									<p:outputLabel value="Forma de Pagamento:" for="forma" />
+									<p:selectOneMenu id="forma"
+										value="#{cadastroOrcamentoMB.orcamento.formapag}"
+										required="true"
+										disabled="#{cadastroOrcamentoMB.orcamento.emitido || cadastroOrcamentoMB.orcamento.aprovado}"
+										requiredMessage="É necessario inserir uma forma de pagamento">
+										<f:selectItem itemLabel="Selecione" />
+										<f:selectItem itemLabel="Dinheiro" itemValue="DINHEIRO" />
+										<f:selectItem itemLabel="Cartão de Credito"
+											itemValue="CARTAO_CREDITO" />
+										<f:selectItem itemLabel="Cartão de Débito"
+											itemValue="CARTAO_DEBITO" />
+										<f:selectItem itemLabel="Cheque" itemValue="CHEQUE" />
+										<f:selectItem itemLabel="Depósito bancário"
+											itemValue="DEPOSITO_BANCARIO" />
+									</p:selectOneMenu>
+									<p:message id="msgForma" for="forma" />
+
+									<p:outputLabel value="Prazo de Entrega:" for="prazo" />
+									<p:inputText id="prazo"
+										value="#{cadastroOrcamentoMB.orcamento.prazoEntrega}"
+										placeholder="Prazo de Entrega" required="true"
+										disabled="#{cadastroOrcamentoMB.orcamento.emitido || cadastroOrcamentoMB.orcamento.aprovado}"
+										requiredMessage="É necessário inserir um prazo de entrega" />
+									<p:message id="msgPrazoo" for="prazo" />
+
+								</p:panelGrid>
+							</p:fieldset>
+
+							<p:fieldset legend="Dados Formais" style="width: auto;">
+								<p:panelGrid columns="1" layout="grid">
+									<p:outputLabel value="Cliente:" for="cliente" />
+									<p:selectOneMenu id="cliente"
+										value="#{cadastroOrcamentoMB.orcamento.cliente}"
+										required="true"
+										requiredMessage="É necessario inserir o Cliente do Orçamento"
+										filter="true" filterMatchMode="startsWith"
+										disabled="#{cadastroOrcamentoMB.orcamento.emitido || cadastroOrcamentoMB.orcamento.aprovado}">
+										<f:selectItem itemLabel="Selecione" />
+										<f:selectItems value="#{cadastroOrcamentoMB.clienteOrcamento}"
+											var="cliente" itemLabel="#{cliente.nome}"
+											itemValue="#{cliente}" />
+									</p:selectOneMenu>
+									<p:message id="msgCliente" for="cliente" />
+
+									<p:outputLabel value="Responsável:" for="usuario" />
+									<p:selectOneMenu id="usuario"
+										value="#{cadastroOrcamentoMB.orcamento.usuario}"
+										required="true"
+										requiredMessage="É necessario inserir o Responsável pelo Orçamento"
+										filter="true" filterMatchMode="startsWith"
+										disabled="#{cadastroOrcamentoMB.orcamento.emitido || cadastroOrcamentoMB.orcamento.aprovado}">
+										<f:selectItem itemLabel="Selecione" />
+										<f:selectItems value="#{cadastroOrcamentoMB.usuarioOrcamento}"
+											var="usuario" itemLabel="#{usuario.nome}"
+											itemValue="#{usuario}" />
+									</p:selectOneMenu>
+									<p:message id="msgUsuario" for="usuario" />
+
+								</p:panelGrid>
+
+								<p:panelGrid columns="1" layout="grid">
+									<!-- 									<p:outputLabel value="Subtotal" style="font-weight: bold" /> -->
+									<!-- 									<h:outputText -->
+									<!-- 										value="#{cadastroOrcamentoMB.orcamento.valorSubTotal}" -->
+									<!-- 										style="font-weight: bold" id="subtotal"> -->
+									<!-- 										<f:convertNumber type="currency" /> -->
+									<!-- 									</h:outputText> -->
+									<p:outputLabel value="Valor Total:" for="precofinal"
+										style="font-weight: bold; font-size: 1.0em" />
+									<h:outputText id="precofinal"
+										value="#{cadastroOrcamentoMB.orcamento.valorTotal}"
+										style="font-weight: bold; font-size: 1.1em">
+										<f:convertNumber type="currency" />
+									</h:outputText>
+								</p:panelGrid>
+
+
+							</p:fieldset>
+						</p:panelGrid>
+					</div>
+				</div>
+			</div>
+			<div class="box box-primary">
+				<div class="box-header with-border">
+					<div class="ui-g-12">
+						<p:panel header="Produtos do Orçamento"
+							styleClass="card no-border">
+							<p:dataTable value="#{cadastroOrcamentoMB.orcamento.itens}"
+								rowIndexVar="linha" var="item" id="tabelaItens">
+								<p:column headerText="ID"
+									style="text-align: center; width: 50px">
+									<h:outputText value="#{item.produto.id}"
+										rendered="#{item.produtoAssosiado}" />
+								</p:column>
+								<p:column headerText="Produto" style="text-align: center; width: 50%">
+									<h:outputText value="#{item.produto.nome}"
+										rendered="#{item.produtoAssosiado}" />
+									<p:autoComplete styleClass="produto-tabela"
+										value="#{cadastroOrcamentoMB.produtoLinhaEditavel}"
+										completeMethod="#{cadastroOrcamentoMB.completarProduto}"
+										var="produto" itemLabel="#{produto.nome}"
+										itemValue="#{produto}" forceSelection="true" size="60"
+										rendered="#{not item.produtoAssosiado}">
+										<p:ajax event="itemSelect"
+											update="tabelaItens :frmCadastro:precofinal"
+											listener="#{cadastroOrcamentoMB.carregarProdutoLinhaEditavel}" />
+									</p:autoComplete>
+								</p:column>
+								<p:column headerText="Valor unitário"
+									style="text-align: right; width: 120px">
+									<h:outputText value="#{item.valorUnitario}">
+										<f:convertNumber type="currency" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Quantidade"
+									style="text-align: center; width: 100px">
+									<p:inputText size="5" value="#{item.quantidade}"
+										disabled="#{cadastroOrcamentoMB.orcamento.emitido || cadastroOrcamentoMB.orcamento.aprovado}">
+										<p:ajax event="change" process="@this"
+											update="tabelaItens :frmCadastro:precofinal"
+											listener="#{cadastroOrcamentoMB.atualizarQuantidade(item, linha)}" />
+									</p:inputText>
+								</p:column>
+								<p:column headerText="Valor total"
+									style="text-align: right; width: 100px">
+									<h:outputText value="#{item.valorTotal}">
+										<f:convertNumber type="currency" />
+									</h:outputText>
+								</p:column>
+
+								<p:columnGroup type="footer">
+									<p:row>
+										<p:column colspan="4" footerText="Subtotal"
+											style="text-align: right" />
+										<p:column style="text-align: right">
+											<f:facet name="footer">
+												<h:outputText
+													value="#{cadastroOrcamentoMB.orcamento.valorSubTotal}">
+													<f:convertNumber type="currency" />
+												</h:outputText>
+											</f:facet>
+										</p:column>
+									</p:row>
+								</p:columnGroup>
+							</p:dataTable>
+						</p:panel>
+					</div>
+
+				</div>
+			</div>
+
+			<div class="box box-primary">
+				<div class="box-header with-border">
+					<div class="ui-fluid ">
+
+						<p:panelGrid id="footerPanel" columns="1" layout="grid">
+							<p:fieldset legend="Observação" style="width: auto;">
+								<p:panelGrid columns="1" layout="grid">
+
+									<p:inputTextarea value="#{cadastroOrcamentoMB.orcamento.obs}"
+										disabled="#{cadastroOrcamentoMB.orcamento.emitido || cadastroOrcamentoMB.orcamento.aprovado}" />
+
+								</p:panelGrid>
+							</p:fieldset>
+						</p:panelGrid>
+					</div>
+
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

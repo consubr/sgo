@@ -1,0 +1,141 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:adm="http://github.com/adminfaces"
+	template="/WEB-INF/templates/template.xhtml">
+
+	<ui:define name="head-end">
+		<style type="text/css">
+.ui-grid-row .ui-grid-col-2, .ui-grid-row .ui-grid-col-10 {
+	padding: 0.5em 0;
+	margin-left: 10px;
+}
+
+.ui-orderlist .ui-orderlist-list {
+	height: auto;
+}
+
+.ui-orderlist .ui-grid-row .ui-grid-col-2, .ui-orderlist .ui-grid-row .ui-grid-col-10
+	{
+	padding: 0;
+}
+</style>
+	</ui:define>
+
+	<ui:define name="title">
+        Produtos
+    </ui:define>
+
+	<ui:define name="description">
+        Pesquise todos os produtos com os determinados filtros
+    </ui:define>
+
+	<ui:define name="body">
+		<adm:breadcrumb title="Pesquisa Produtos" />
+		
+		<h:form>
+			<div class="box box-primary">
+				<div class="box-header with-border">
+					<p:commandButton action="cadastro-produto?faces-redirect=true"
+						ajax="false" icon="fa fa-plus" value="Novo"
+						styleClass="btn-success" />
+					
+					<p:spacer width="5" />
+					<p:separator />
+					<H4>Matéria Prima</H4>
+
+					<p:dataTable id="produtoTable" widgetVar="produtoTable" rows="5"
+						value="#{listaProdutoMB.produtos}" var="produto"
+						rowKey="#{produto.id}"
+						selection="#{listaProdutoMB.produtoSelecionados}" paginator="true"
+						paginatorPosition="bottom"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+						currentPageReportTemplate="" rowsPerPageTemplate="5,10,15,20,30" emptyMessage="Não há matérias-primas cadastradas no sistema.">
+
+						<p:column headerText="Data da Criação" width="15%"
+							sortBy="#{produto.criacao}">
+							<h:outputLabel value="#{produto.criacao}">
+								 <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+							</h:outputLabel>
+						</p:column>
+
+						<p:column headerText="Nome" filterBy="#{produto.nome}"
+							sortBy="#{produto.nome}" filterMatchMode="contains">
+							<h:link value="#{produto.nome}" outcome="cadastro-produto.xhtml">
+								<f:param name="id" value="#{produto.id}" />
+							</h:link>
+						</p:column>
+
+						<p:column headerText="Descrição" filterBy="#{produto.descricao}"
+							sortBy="#{produto.descricao}" filterMatchMode="contains">
+							<h:outputLabel value="#{produto.descricao}" />
+						</p:column>
+						
+						<p:column headerText="Classe" width="10%">
+							<h:outputLabel value="#{produto.classe.descricao}" />
+						</p:column>
+						
+						<p:column headerText="Tipo Produto"	width="12%"						
+							sortBy="#{produto.tipoproduto.nometipo}">
+							<h:outputLabel value="#{produto.tipoproduto.nometipo}" />
+						</p:column>
+
+						<p:column headerText="Preço Base" filterBy="#{produto.precobase}" width="10%"
+							sortBy="#{produto.precobase}" filterMatchMode="contains" styleClass="moeda">
+							<h:outputLabel value="#{produto.precobase}">
+								<f:convertNumber type="currency"/>
+							</h:outputLabel>
+						</p:column>
+
+					</p:dataTable>
+					<H4>Produto Acabado</H4>
+					
+					<p:dataTable id="produtoPATable" widgetVar="produtoPATable" rows="5"
+						value="#{listaProdutoMB.produtoPA}" var="produtoPA"
+						rowKey="#{produtoPA.id}"
+						selection="#{listaProdutoMB.produtoPASelecionados}" paginator="true"
+						paginatorPosition="bottom"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+						currentPageReportTemplate="" rowsPerPageTemplate="5,10,15,20,30" emptyMessage="Não há produtos acabados cadastrados no sistema.">
+
+						<p:column headerText="Data da Criação" width="15%"
+							sortBy="#{produtoPA.criacao}">
+							<h:outputLabel value="#{produtoPA.criacao}">
+								 <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+							</h:outputLabel>
+						</p:column>
+
+						<p:column headerText="Nome" filterBy="#{produtoPA.nome}"
+							sortBy="#{produtoPA.nome}" filterMatchMode="contains">
+							<h:link value="#{produtoPA.nome}" outcome="cadastro-produto.xhtml">
+								<f:param name="id" value="#{produtoPA.id}" />
+							</h:link>
+						</p:column>
+
+						<p:column headerText="Descrição" filterBy="#{produtoPA.descricao}"
+							sortBy="#{produtoPA.descricao}" filterMatchMode="contains">
+							<h:outputLabel value="#{produtoPA.descricao}" />
+						</p:column>
+						
+						<p:column headerText="Classe" width="12%">
+							<h:outputLabel value="#{produtoPA.classe.descricao}" />
+						</p:column>
+
+						<p:column headerText="Preço" filterBy="#{produtoPA.precobase}" width="10%"
+							sortBy="#{produtoPA.precobase}" filterMatchMode="contains">
+							<h:outputLabel value="#{produtoPA.precofinal}">
+								<f:convertNumber type="currency"/>
+							</h:outputLabel>
+						</p:column>
+					</p:dataTable>
+					
+					
+				</div>
+			</div>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

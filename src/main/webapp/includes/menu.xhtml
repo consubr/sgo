@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+
+    <ul class="sidebar-menu">
+        <li>
+            <p:link href="/index.xhtml">
+                <i class="fa fa-home"></i>
+                <span>Home</span>
+            </p:link>
+        </li>
+        <li class="header">
+            AÇÕES
+        </li>
+        
+        <li>
+            <p:link href="/pages/cliente/lista-cliente.xhtml">
+                <i class="fa fa-id-card-o"></i>
+                <span>Clientes</span>
+            </p:link>
+        </li>
+        <li>
+            <p:link href="/pages/orcamento/lista-orcamento.xhtml">
+                <i class="fa fa-edit"></i>
+                <span>Orcamentos</span>
+            </p:link> 
+        </li>
+        <li>
+            <p:link href="/pages/produto/lista-produto.xhtml">
+                <i class="fa fa-shopping-basket"></i>
+                <span>Produtos</span>
+            </p:link> 
+        </li>
+        
+        <li>
+            <p:link href="/pages/ficha/lista-ficha.xhtml">
+                <i class="fa fa-industry"></i>
+                <span>Ficha Técnica</span>
+            </p:link> 
+        </li>
+        
+        <li class="header">
+            Relatórios
+        </li>
+        
+        <li class="treeview">
+        	<a href="#">
+                <i class="fa fa-pie-chart"></i>
+                <span>Relatórios</span>
+                <span class="pull-right-container">
+                     <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+            <ul class="treeview-menu">
+        		<li>
+          	  	<p:link href="/pages/relatorios/relatorio-cliente.xhtml">
+          	    	  <i class="fa fa-pie-chart"></i>
+          	    	  <span>Orç. Cliente</span>
+          	 	</p:link>
+	       		</li>
+	       		<li>
+          	  	<p:link href="/pages/relatorios/relatorio-orcamento.xhtml">
+          	    	  <i class="fa fa-pie-chart"></i>
+          	    	  <span>Orç. Emitido por Data</span>
+          	 	</p:link>
+	       		</li>
+	       		<li>
+          	  	<p:link href="/pages/relatorios/relatorio-aprovado.xhtml">
+          	    	  <i class="fa fa-pie-chart"></i>
+          	    	  <span>Orç. Aprovados por Data</span>
+          	 	</p:link>
+	       		</li>
+	       		<li>
+          	  	<p:link href="/pages/relatorios/relatorio-produto.xhtml">
+          	    	  <i class="fa fa-pie-chart"></i>
+          	    	  <span>Produtos registrados por Data</span>
+          	 	</p:link>
+	       		</li>
+	       		<li>
+          	  	<p:link href="/pages/relatorios/relatorio-classe.xhtml">
+          	    	  <i class="fa fa-pie-chart"></i>
+          	    	  <span>Produtos por Classe</span>
+          	 	</p:link>
+	       		</li>
+	       		
+	        
+      		</ul>
+        </li>
+        
+        <li class="header">
+            Sistema
+        </li>
+        
+        <li>
+            <p:link href="/pages/admin/painel.xhtml">
+                <i class="fa fa-terminal"></i>
+                <span>Administração</span><span class="label label-danger pull-right">ADMIN</span>
+            </p:link>
+        </li>
+        
+        <li>
+            <p:link href="/j_spring_security_logout">
+                <i class="fa fa-external-link"></i>
+                <span>Sair do Sistema</span>
+            </p:link>
+        </li>
+        
+        
+        
+    </ul>
+
+
+</ui:composition>

@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:adm="http://github.com/adminfaces"
+	template="/WEB-INF/templates/template.xhtml">
+
+	<ui:define name="title">
+        Cadastro Cliente
+    </ui:define>
+
+	<ui:define name="body">
+		<f:metadata>
+			<f:viewParam name="id" value="#{cadastroClienteMB.idCliente}"
+				converter="javax.faces.Long" />
+			<f:event listener="#{cadastroClienteMB.inicializar()}"
+				type="preRenderView"></f:event>
+		</f:metadata>
+
+		<adm:breadcrumb title="Cadastro Cliente"
+			link="cadastro-cliente.xhtml?id=" />
+		<h:form id="form" prependId="false">
+			<p:focus />
+
+
+			<div class="box box-primary">
+				<div class="box-header with-border">
+					<div id="main-buttons" class="hidden-sm hidden-xs">
+						<p:commandButton value="Salvar" update="@form"
+							action="#{cadastroClienteMB.salvar()}" icon="fa fa-check"
+							styleClass="btn-success" />
+						<p:spacer width="5" />
+
+						<p:commandButton value="Excluir" process="@this"
+							rendered="#{cadastroClienteMB.cliente.edicao}" icon="fa fa-trash"
+							action="#{cadastroClienteMB.excluir()}" styleClass="btn-danger">
+						</p:commandButton>
+						<p:spacer width="5" />
+						<p:commandButton value="Voltar" immediate="true"
+							action="lista-cliente?faces-redirect=true" process="@this"
+							icon="fa fa-close" />
+
+					</div>
+
+					<p:splitButton value="Salvar" update="@form" icon="fa fa-check"
+						action="#{cadastroClienteMB.salvar()}"
+						styleClass="hidden-md hidden-lg btn-success">
+						<p:menuitem value="Excluir"
+							rendered="#{cadastroClienteMB.cliente.edicao}"
+							action="#{cadastroClienteMB.excluir()}" process="@this"
+							icon="fa fa-trash" />
+						<p:separator />
+						<p:menuitem value="Voltar"
+							action="lista-cliente?faces-redirect=true" process="@this"
+							icon="fa fa-close" />
+					</p:splitButton>
+
+
+
+					<p:separator />
+
+					<div class="ui-fluid">
+
+						<p:panelGrid id="capaPanel" columns="2" layout="grid">
+							<p:fieldset legend="Dados Pessoais" style="width: auto;">
+								<p:panelGrid columns="1" layout="grid">
+
+									<p:outputLabel value="Data Criação:" for="criacao"
+										rendered="#{cadastroClienteMB.cliente.edicao}" />
+									<p:outputLabel id="criacao"
+										value="#{cadastroClienteMB.cliente.criacao}" disabled="true"
+										rendered="#{cadastroClienteMB.cliente.edicao}">
+										<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"
+											timeZone="America/Sao_Paulo" />
+									</p:outputLabel>
+
+									<p:outputLabel value="CPF:" for="cpf" />
+									<p:inputMask id="cpf" 
+										placeholder="CPF do Cliente"
+										value="#{cadastroClienteMB.cliente.cpf}">
+<!-- 									<f:validator validatorId="cpfValidar"/> -->
+									</p:inputMask>
+									<p:message id="msgCPF" for="cpf"/>
+
+									<p:outputLabel value="Nome:" for="nome" />
+									<p:inputText id="nome"
+										value="#{cadastroClienteMB.cliente.nome}"
+										placeholder="Nome do Cliente" 
+										required="true" 
+										requiredMessage="É necessário inserir um nome"/>
+										<p:message id="msgNome" for="nome"/>
+
+									<p:outputLabel value="E-mail:" for="email" />
+									<p:inputText id="email"
+										value="#{cadastroClienteMB.cliente.email}"
+										placeholder="E-mail" 
+										required="true" 
+										requiredMessage="É necessário inserir um e-mail"/>
+										<p:message id="msgEmail" for="email"/>
+
+									<p:outputLabel value="Telefone:" for="telefone" />
+									<p:inputMask id="telefone" mask="(99) 9999-9999"
+										placeholder="Telefone"
+										value="#{cadastroClienteMB.cliente.telefone}" 
+										requiredMessage="É necessário inserir um telefone"
+										required="true"/>
+										<p:message id="msgTelefone" for="telefone"/>
+
+									<p:outputLabel value="Status:" for="status" />
+									<p:selectOneMenu id="status"
+										value="#{cadastroClienteMB.cliente.status}" 
+										required="true"
+										requiredMessage="É necessario inserir se é ATIVO ou INATIVO">
+										<f:selectItem itemLabel="Selecione" />
+										<f:selectItem itemLabel="Ativo" itemValue="ATIVO" />
+										<f:selectItem itemLabel="Inativo" itemValue="INATIVO" />
+									</p:selectOneMenu>
+									<p:message id="msgStatus" for="status"/>
+
+								</p:panelGrid>
+							</p:fieldset>
+
+							<p:fieldset legend="Endereço" style="margin-bottom:20px">
+								<p:panelGrid columns="1" layout="grid">
+									<p:outputLabel value="CEP:" for="cep" />
+									
+									<p:inputMask id="cep"
+									mask="99999-999"
+									placeholder="CEP"
+									value="#{cadastroClienteMB.cliente.cep}"/>
+									
+									<p:outputLabel value="Endereço:" for="logradouro" />
+									<p:inputText id="logradouro"
+										value="#{cadastroClienteMB.cliente.logradouro}"
+										placeholder="Logradouro" />
+
+									<p:outputLabel value="Numero:" for="numero" />
+									<p:inputText id="numero"
+										value="#{cadastroClienteMB.cliente.nr}"
+										placeholder="Numero" />
+
+									<p:outputLabel value="Complemento:" for="complemento" />
+									<p:inputText id="complemento"
+										value="#{cadastroClienteMB.cliente.complemento}"
+										placeholder="Complemento do Endereço" />
+
+									<p:outputLabel value="Estado:" for="estado" />
+									<p:selectOneMenu id="estado"
+										value="#{cadastroClienteMB.cliente.estado}">
+										<f:selectItem itemLabel="Selecione" />
+										<f:selectItem itemLabel="Rondônia" itemValue="RO" />
+										<f:selectItem itemLabel="Acre" itemValue="AC" />
+										<f:selectItem itemLabel="Amazonas" itemValue="AM" />
+										<f:selectItem itemLabel="Roraima" itemValue="RR" />
+										<f:selectItem itemLabel="Pará" itemValue="PA" />
+										<f:selectItem itemLabel="Amapá" itemValue="AP" />
+										<f:selectItem itemLabel="Tocantins" itemValue="TO" />
+										<f:selectItem itemLabel="Maranhão" itemValue="MA" />
+										<f:selectItem itemLabel="Piauí" itemValue="PI" />
+										<f:selectItem itemLabel="Ceará" itemValue="CE" />
+										<f:selectItem itemLabel="Rio Grande do Norte" itemValue="RN" />
+										<f:selectItem itemLabel="Paraíba" itemValue="PB" />
+										<f:selectItem itemLabel="Pernambuco" itemValue="PE" />
+										<f:selectItem itemLabel="Alagoas" itemValue="AL" />
+										<f:selectItem itemLabel="Sergipe" itemValue="SE" />
+										<f:selectItem itemLabel="Bahia" itemValue="BA" />
+										<f:selectItem itemLabel="Minas Gerais" itemValue="MG" />
+										<f:selectItem itemLabel="Espírito Santo" itemValue="ES" />
+										<f:selectItem itemLabel="Rio de Janeiro" itemValue="RJ" />
+										<f:selectItem itemLabel="São Paulo" itemValue="SP" />
+										<f:selectItem itemLabel="Paraná" itemValue="PR" />
+										<f:selectItem itemLabel="Santa Cataria" itemValue="SP" />
+										<f:selectItem itemLabel="Rio Grande do Sul" itemValue="RS" />
+										<f:selectItem itemLabel="Mato Grosso do Sul" itemValue="MS" />
+										<f:selectItem itemLabel="Mato Grosso" itemValue="MT" />
+										<f:selectItem itemLabel="Goiás" itemValue="GO" />
+										<f:selectItem itemLabel="Distrito Federal" itemValue="DF" />
+									</p:selectOneMenu>
+
+									<p:outputLabel value="Cidade:" for="cidade" />
+									<p:inputText id="cidade"
+										value="#{cadastroClienteMB.cliente.cidade}"
+										placeholder="Cidade" />
+										
+								</p:panelGrid>
+							</p:fieldset>
+
+						</p:panelGrid>
+
+					</div>
+				</div>
+			</div>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

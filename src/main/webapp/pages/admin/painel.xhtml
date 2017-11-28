@@ -1,0 +1,150 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:adm="http://github.com/adminfaces"
+	template="/WEB-INF/templates/template.xhtml">
+
+	<ui:define name="head-end">
+		<style type="text/css">
+.ui-grid-row .ui-grid-col-2, .ui-grid-row .ui-grid-col-10 {
+	padding: 0.5em 0;
+	margin-left: 10px;
+}
+
+.ui-orderlist .ui-orderlist-list {
+	height: auto;
+}
+
+.ui-orderlist .ui-grid-row .ui-grid-col-2, .ui-orderlist .ui-grid-row .ui-grid-col-10
+	{
+	padding: 0;
+}
+</style>
+	</ui:define>
+
+	<ui:define name="title">
+        Painel de Administrador
+    </ui:define>
+
+	<ui:define name="description">
+        Administre algumas funcionalidades do sistema
+    </ui:define>
+
+	<ui:define name="body">
+		<adm:breadcrumb title="Painel" />
+
+		<h:form>
+			<div class="box box-primary">
+				<div class="box-header with-border">
+					<p:spacer height="15px" />
+<!-- 					<div class="row"> -->
+<!-- 						<div class="col-md-3 col-sm-6 col-xs-12"> -->
+<!-- 							<div class="info-box"> -->
+<!-- 								<span class="info-box-icon bg-aqua"><i -->
+<!-- 									class="fa fa-edit"></i></span> -->
+
+<!-- 								<div class="info-box-content"> -->
+<!-- 									<span class="info-box-text">Total Orçamentos</span> <span -->
+<!-- 										class="info-box-number">542</span> -->
+<!-- 								</div> -->
+<!-- 								/.info-box-content -->
+<!-- 							</div> -->
+<!-- 							/.info-box -->
+<!-- 						</div> -->
+<!-- 						/.col -->
+<!-- 						<div class="col-md-3 col-sm-6 col-xs-12"> -->
+<!-- 							<div class="info-box"> -->
+<!-- 								<span class="info-box-icon bg-red"><i -->
+<!-- 									class="fa fa-industry"></i></span> -->
+
+<!-- 								<div class="info-box-content"> -->
+<!-- 									<span class="info-box-text">Fichas Técnicas</span> <span -->
+<!-- 										class="info-box-number">140</span> -->
+<!-- 								</div> -->
+<!-- 								/.info-box-content -->
+<!-- 							</div> -->
+<!-- 							/.info-box -->
+<!-- 						</div> -->
+<!-- 						/.col -->
+
+<!-- 						fix for small devices only -->
+<!-- 						<div class="clearfix visible-sm-block"></div> -->
+
+<!-- 						<div class="col-md-3 col-sm-6 col-xs-12"> -->
+<!-- 							<div class="info-box"> -->
+<!-- 								<span class="info-box-icon bg-green"><i -->
+<!-- 									class="ion ion-ios-cart-outline"></i></span> -->
+
+<!-- 								<div class="info-box-content"> -->
+<!-- 									<span class="info-box-text">PRODUTOS</span> <span -->
+<!-- 										class="info-box-number">1.504</span> -->
+<!-- 								</div> -->
+<!-- 								/.info-box-content -->
+<!-- 							</div> -->
+<!-- 							/.info-box -->
+<!-- 						</div> -->
+<!-- 						/.col -->
+<!-- 						<div class="col-md-3 col-sm-6 col-xs-12"> -->
+<!-- 							<div class="info-box"> -->
+<!-- 								<span class="info-box-icon bg-yellow"><i -->
+<!-- 									class="ion ion-ios-people-outline"></i></span> -->
+
+<!-- 								<div class="info-box-content"> -->
+<!-- 									<span class="info-box-text">TOTAL USUARIOS</span> <span -->
+<!-- 										class="info-box-number">10</span> -->
+<!-- 								</div> -->
+<!-- 								/.info-box-content -->
+<!-- 							</div> -->
+<!-- 							/.info-box -->
+<!-- 						</div> -->
+<!-- 						/.col -->
+<!-- 					</div> -->
+<!-- 					/.row -->
+					
+					
+					<p:panelGrid id="capaPanel" columns="2" layout="grid">
+						<p:fieldset legend="Usuários" style="width: auto;">
+							<p:panelGrid columns="1" layout="grid">
+								<h:graphicImage
+									url="https://openclipart.org/image/2400px/svg_to_png/247319/abstract-user-flat-3.png"
+									style="width: 80px; position: relative; display: block; left: 40%;" />
+								<p:separator />
+								<p:commandLink
+									action="/pages/admin/usuario/lista-usuario?faces-redirect=true"
+									value="Lista de Usuários" ajax="false" />
+
+								<p:commandLink
+									action="/pages/admin/usuario/cadastro-usuario?faces-redirect=true"
+									value="Cadastrar Usuário" ajax="false" />
+							</p:panelGrid>
+						</p:fieldset>
+
+						<p:fieldset legend="Tipo de Produto" style="width: auto;">
+							<p:panelGrid columns="1" layout="grid">
+								<h:graphicImage
+									url="http://w2.nics.unicamp.br/wp-content/uploads/2016/04/produtoServico.png"
+									style="width: 80px; position: relative; display: block; left: 40%;" />
+								<p:separator />
+								<p:commandLink
+									action="/pages/admin/tipoproduto/lista-tipo?faces-redirect=true"
+									value="Lista Tipo de Produtos" ajax="false" />
+
+								<p:commandLink
+									action="/pages/admin/tipoproduto/cadastro-tipo?faces-redirect=true"
+									value="Cadastrar Tipo de Produto" ajax="false" />
+
+
+							</p:panelGrid>
+						</p:fieldset>
+					</p:panelGrid>
+
+				</div>
+			</div>
+		</h:form>
+
+
+	</ui:define>
+
+</ui:composition>
