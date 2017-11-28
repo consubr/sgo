@@ -8,7 +8,7 @@ O Sistema de Gestão de Orçamentos foi desenvolvido como iniciativa de um traba
 - **Leve e Rápido:** Otimizado para rodar com pouco recurso, sem perder desempenho.
 - **Praticidade:** Envie um e-mail para o cliente com o orçamento ou faça a impressão em um relatório personalizado e profissional.
 
-# Requisitos
+## Requisitos
 - Banco de Dados MySQL
 - Apache Tomcat 7+
 
