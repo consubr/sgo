@@ -18,7 +18,7 @@ Para subir o projeto e para que o mesmo funcione corretamente com todos seus rec
 ### MySQL
 ```bash
 1. Criar um banco de dados no MySQL
-2. Abrir o arquivo `persistence.xml` que se encontra na pasta `/src/main/resources/META-INF/`
+2. Abrir o arquivo ``persistence.xml`` que se encontra na pasta ``/src/main/resources/META-INF/``
 3. Mudar onde esta escrito "NOMEBANCO" para o nome do banco criado e o usuário, senha do MySQL.
 4. Salvar o arquivo.
 ```
