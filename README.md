@@ -18,17 +18,17 @@ Para subir o projeto e para que o mesmo funcione corretamente com todos seus rec
 ### MySQL
 ```bash
 1. Criar um banco de dados no MySQL
-2. Abrir o arquivo ``persistence.xml`` que se encontra na pasta ``/src/main/resources/META-INF/``
+2. Abrir o arquivo "persistence.xml" que se encontra na pasta "/src/main/resources/META-INF/"
 3. Mudar onde esta escrito "NOMEBANCO" para o nome do banco criado e o usuário, senha do MySQL.
 4. Salvar o arquivo.
 ```
 
 ### Código
 ```bash
-1. Localizar o arquivo `mail.properties` que se encontra na pasta `/src/main/resources/`
+1. Localizar o arquivo "mail.properties" que se encontra na pasta "/src/main/resources/"
 2. Abrir o arquivo e editar as configurações do servidor SMTP e login e senha do e-mail.
 3. Salvar o arquivo.
-4. Localizar a classe de conexão com o banco chamada `JPAUtil` e mudar para o nome do seu banco onde referencia o valor "NOMEBANCO".
+4. Localizar a classe "JPAUtil" e mudar para o nome do seu banco onde está "NOMEBANCO".
 5. Salvar o arquivo.
 ```
 
